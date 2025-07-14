@@ -635,8 +635,9 @@ body.dark-mode .related-post-item {
 body.dark-mode .related-post-thumb {
   border-bottom-color: #2d3748;
 }
-body.dark-mode .related-post-title a {
-  border-color: #2d3748;
+body.dark-mode .related-post-title a,
+body.dark-mode .related-post-title a:hover {
+  color: #e2e8f0;
 }
 body.dark-mode .ad-zone {
   background: #23272a;
@@ -676,11 +677,11 @@ body.dark-mode #accept-cookies:hover {
 }
 
 /* === Focus Styles for Accessibility === */
-:focus {
+:focus-visible {
   outline: 2px solid #3182ce;
   outline-offset: 2px;
 }
-button:focus, a:focus, input:focus {
+button:focus-visible, a:focus-visible, input:focus-visible {
   outline: 2px solid #38a169;
   outline-offset: 2px;
 } 
@@ -710,13 +711,14 @@ button:focus, a:focus, input:focus {
   height: 40px;
   background: #3182ce;
   color: #fff;
+  padding: 8px;
   border-radius: 0 8px 8px 0;
   text-align: center;
-  line-height: 40px;
-  font-weight: bold;
-  font-size: 1.1em;
   margin-right: 2px;
   transition: background 0.2s;
+}
+#sticky-social-sidebar .sidebar-share svg {
+  fill: #fff;
 }
 #sticky-social-sidebar .sidebar-share:hover {
   background: #38a169;
@@ -752,7 +754,7 @@ button:focus, a:focus, input:focus {
   opacity: 1;
   pointer-events: auto;
 }
-#back-to-top:focus {
+#back-to-top:focus-visible {
   outline: 2px solid #38a169;
 }
 body.dark-mode #back-to-top {

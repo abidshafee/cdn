@@ -90,26 +90,23 @@ function addLastUpdatedDate() {
 }
 document.addEventListener('DOMContentLoaded', addLastUpdatedDate);
 
-// === Social Sharing Functionality ===
-document.querySelectorAll('.share-btn').forEach(btn => {
-  btn.addEventListener('click', function () {
-    const platform = this.getAttribute('data-platform');
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    let shareUrl = '';
-    switch (platform) {
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-        break;
-      case 'linkedin':
-        shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`;
-        break;
-    }
-    if (shareUrl) window.open(shareUrl, '_blank', 'noopener');
-  });
+// === Reusable Social Sharing Function ===
+function handleShareClick(e) {
+  e.preventDefault();
+  const platform = this.getAttribute('data-platform');
+  const url = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent(document.title);
+  let shareUrl = '';
+  switch (platform) {
+    case 'facebook': shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`; break;
+    case 'twitter': shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`; break;
+    case 'linkedin': shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`; break;
+  }
+  if (shareUrl) window.open(shareUrl, '_blank', 'noopener');
+}
+
+document.querySelectorAll('.share-btn, .sidebar-share').forEach(btn => {
+  btn.addEventListener('click', handleShareClick);
 });
 
 // === Email Subscription Form Handling ===
@@ -131,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // TODO: Load ad code dynamically here
+            // Example: Load ad script dynamically
+            // const adScript = document.createElement('script');
+            // adScript.src = 'https://ads.example.com/ad.js';
+            // entry.target.appendChild(adScript);
             observer.unobserve(entry.target);
           }
         });
@@ -190,25 +190,6 @@ document.querySelectorAll('.affiliate-btn').forEach(btn => {
     // Example: gtag('event', 'affiliate_click', { 'event_category': 'Affiliate', 'event_label': this.href });
   });
 });
-
-// === GDPR Cookie Consent Banner ===
-function showCookieConsent() {
-  if (localStorage.getItem('gdpr_cookie_consent') === 'accepted') return;
-  const banner = document.createElement('div');
-  banner.id = 'cookie-consent-banner';
-  banner.innerHTML = `
-    <div class="cookie-banner-content">
-      This site uses cookies to personalize content and ads. By using this site, you agree to our <a href="/p/privacy-policy.html" target="_blank">Privacy Policy</a>.
-      <button id="accept-cookies">Accept</button>
-    </div>
-  `;
-  document.body.appendChild(banner);
-  document.getElementById('accept-cookies').addEventListener('click', function() {
-    localStorage.setItem('gdpr_cookie_consent', 'accepted');
-    banner.remove();
-  });
-}
-document.addEventListener('DOMContentLoaded', showCookieConsent);
 
 // === Keyboard Navigation for Main Navigation ===
 const nav = document.getElementById('main-nav');
@@ -275,27 +256,5 @@ if (backToTopBtn) {
     document.body.focus();
   });
 }
-// === Sticky Social Sharing Sidebar Functionality ===
-document.querySelectorAll('.sidebar-share').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.preventDefault();
-    const platform = this.getAttribute('data-platform');
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    let shareUrl = '';
-    switch (platform) {
-      case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-        break;
-      case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-        break;
-      case 'linkedin':
-        shareUrl = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`;
-        break;
-    }
-    if (shareUrl) window.open(shareUrl, '_blank', 'noopener');
-  });
-});
 
 // === End of Script === 
