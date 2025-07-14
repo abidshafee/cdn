@@ -118,9 +118,9 @@
       </script>
     </b:if>
     <!-- External CSS (Artifact 2) -->
-    <link href="/forgedaily-mirror.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-mirror.css"/>
     <!-- External JS (Artifact 3) -->
-    <script src="/forgedaily-mirror.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-mirror.js"></script>
     <!-- Critical CSS for above-the-fold (optional, for performance) -->
     <style>
       /* Insert critical CSS here for faster rendering */
