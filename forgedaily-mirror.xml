@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<b:template xmlns:b="http://www.google.com/2005/gml/b">
+  <!--
+    ForgeDaily Mirror Blogger Theme
+    Artifact 1: XML Template File
+    Author: [Your Name]
+    Version: 1.0
+    Instructions:
+      - Upload this file as your Blogger theme.
+      - Place the CSS and JS files (Artifacts 2 & 3) at the specified URLs below.
+      - Customize branding, widgets, and ad codes as needed.
+  -->
+  <b:include data='blog' name='all-head-content'/>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta content='width=device-width, initial-scale=1' name='viewport'/>
+    <title><data:blog.pageTitle/></title>
+    <meta name="description" expr:content='data:blog.metaDescription'/>
+    <meta name="keywords" expr:content='data:blog.metaKeywords'/>
+    <meta name="author" content="ForgeDaily Mirror"/>
+    <link rel="canonical" expr:href='data:blog.canonicalUrl'/>
+    <!-- Open Graph -->
+    <meta property="og:title" expr:content='data:blog.pageTitle'/>
+    <meta property="og:description" expr:content='data:blog.metaDescription'/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" expr:content='data:blog.canonicalUrl'/>
+    <meta property="og:image" expr:content='data:blog.postImageUrl'/>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" expr:content='data:blog.pageTitle'/>
+    <meta name="twitter:description" expr:content='data:blog.metaDescription'/>
+    <meta name="twitter:image" expr:content='data:blog.postImageUrl'/>
+    <!-- Schema Markup (JSON-LD) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "ForgeDaily Mirror",
+        "url": "https://forgedaily.com/",
+        "logo": "https://forgedaily.com/logo.png"
+      }
+    </script>
+    <!-- Article Schema for Blog Posts -->
+    <b:if cond='data:blog.pageType == &quot;item&quot;'>
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "<data:post.title/>",
+          "description": "<data:post.snippet/>",
+          "image": "<data:post.firstImageUrl/>",
+          "author": {
+            "@type": "Person",
+            "name": "<data:post.author/>",
+            "url": "<data:post.authorProfileUrl/>"
+          },
+          "datePublished": "<data:post.timestamp/>",
+          "publisher": {
+            "@type": "Organization",
+            "name": "ForgeDaily Mirror",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://forgedaily.com/logo.png"
+            }
+          }
+        }
+      </script>
+    </b:if>
+    <!-- Review Schema for Review Posts (add a label 'Review' to trigger) -->
+    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels contains &quot;Review&quot;'>
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Review",
+          "itemReviewed": {
+            "@type": "Product",
+            "name": "<data:post.title/>",
+            "image": "<data:post.firstImageUrl/>"
+          },
+          "author": {
+            "@type": "Person",
+            "name": "<data:post.author/>"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "4.5",
+            "bestRating": "5"
+          },
+          "reviewBody": "<data:post.snippet/>"
+        }
+      </script>
+    </b:if>
+    <!-- FAQ Schema for FAQ Pages (add a label 'FAQ' to trigger) -->
+    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels contains &quot;FAQ&quot;'>
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Sample Question 1?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sample answer 1."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Sample Question 2?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sample answer 2."
+              }
+            }
+          ]
+        }
+      </script>
+    </b:if>
+    <!-- External CSS (Artifact 2) -->
+    <link href="/forgedaily-mirror.css" rel="stylesheet" type="text/css"/>
+    <!-- External JS (Artifact 3) -->
+    <script src="/forgedaily-mirror.js" defer></script>
+    <!-- Critical CSS for above-the-fold (optional, for performance) -->
+    <style>
+      /* Insert critical CSS here for faster rendering */
+    </style>
+  </head>
+  <body>
+    <!-- Sticky Social Sharing Sidebar (Desktop) -->
+    <aside id="sticky-social-sidebar" aria-label="Sticky social sharing sidebar">
+      <ul>
+        <li><a href="#" class="sidebar-share" data-platform="facebook" aria-label="Share on Facebook">FB</a></li>
+        <li><a href="#" class="sidebar-share" data-platform="twitter" aria-label="Share on Twitter">TW</a></li>
+        <li><a href="#" class="sidebar-share" data-platform="linkedin" aria-label="Share on LinkedIn">IN</a></li>
+      </ul>
+    </aside>
+    <!-- Header with Logo and Navigation -->
+    <header id="site-header">
+      <div class="container header-flex">
+        <a href="/" class="logo" title="ForgeDaily Mirror">
+          <img src="https://forgedaily.com/logo.png" alt="ForgeDaily Mirror Logo"/>
+        </a>
+        <nav id="main-nav" role="navigation" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li><a href="/search/label/Tech%20Reviews">Tech Reviews</a>
+              <ul class="dropdown">
+                <li><a href="/search/label/Smartphones">Smartphones</a></li>
+                <li><a href="/search/label/Laptops">Laptops</a></li>
+                <li><a href="/search/label/Gadgets">Gadgets</a></li>
+                <li><a href="/search/label/Software">Software</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/label/Finance">Finance</a>
+              <ul class="dropdown">
+                <li><a href="/search/label/Investing">Investing</a></li>
+                <li><a href="/search/label/Personal%20Finance">Personal Finance</a></li>
+                <li><a href="/search/label/Market%20Analysis">Market Analysis</a></li>
+                <li><a href="/search/label/Crypto">Crypto</a></li>
+              </ul>
+            </li>
+            <li><a href="/search/label/Productivity">Productivity</a>
+              <ul class="dropdown">
+                <li><a href="/search/label/Tools">Tools</a></li>
+                <li><a href="/search/label/Habits">Habits</a></li>
+                <li><a href="/search/label/Workflow">Workflow</a></li>
+                <li><a href="/search/label/Time%20Management">Time Management</a></li>
+              </ul>
+            </li>
+            <li><a href="/p/about.html">About</a></li>
+            <li><a href="/p/contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <button id="mobile-menu-toggle" aria-label="Open Menu">☰</button>
+        <!-- Dark Mode Toggle Button -->
+        <button id="dark-mode-toggle" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode">🌙</button>
+      </div>
+      <!-- AdSense Header Banner -->
+      <div class="ad-zone header-ad">
+        <!-- Insert AdSense code here -->
+      </div>
+    </header>
+    <!-- Breadcrumbs (SEO) -->
+    <nav class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList" aria-label="Breadcrumb">
+      <b:section id="breadcrumbs" class="breadcrumbs-section"/>
+    </nav>
+    <!-- Main Content Area -->
+    <main id="main-content" role="main">
+      <div class="container main-flex">
+        <!-- Sidebar Widgets -->
+        <aside id="sidebar" role="complementary">
+          <b:section id="sidebar-widgets" class="sidebar-widgets"/>
+          <!-- AdSense Sidebar Rectangle -->
+          <div class="ad-zone sidebar-ad">
+            <!-- Insert AdSense code here -->
+          </div>
+        </aside>
+        <!-- Blog Posts -->
+        <section id="blog-posts" aria-label="Blog posts">
+          <b:section id="main-widgets" class="main-widgets"/>
+          <!-- In-Content Ad Zone -->
+          <div class="ad-zone in-content-ad">
+            <!-- Insert AdSense code here -->
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- Author Bio Section (with schema) -->
+    <section id="author-bio" itemscope itemtype="https://schema.org/Person">
+      <img src="/author.jpg" alt="Author Photo" itemprop="image"/>
+      <div>
+        <span itemprop="name">Author Name</span>
+        <span itemprop="description">Short author bio goes here.</span>
+        <a href="/p/about.html" itemprop="url">Read more</a>
+      </div>
+    </section>
+    <!-- Comments Section -->
+    <section id="comments" aria-label="Comments">
+      <b:section id="comments-widgets" class="comments-widgets"/>
+    </section>
+    <!-- Social Sharing Buttons -->
+    <section id="social-sharing" aria-label="Social sharing">
+      <button class="share-btn" data-platform="facebook">Share on Facebook</button>
+      <button class="share-btn" data-platform="twitter">Share on Twitter</button>
+      <button class="share-btn" data-platform="linkedin">Share on LinkedIn</button>
+    </section>
+    <!-- Newsletter Signup (Email) -->
+    <section id="newsletter-signup" aria-label="Newsletter signup">
+      <form id="email-signup-form">
+        <label for="email">Subscribe to our newsletter:</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email"/>
+        <button type="submit">Subscribe</button>
+      </form>
+    </section>
+    <!-- Footer -->
+    <footer id="site-footer" aria-label="Footer">
+      <div class="container footer-flex">
+        <div class="footer-branding">
+          <img src="https://forgedaily.com/logo.png" alt="ForgeDaily Mirror Logo"/>
+          <span>© <data:blog.year/> ForgeDaily Mirror. All rights reserved.</span>
+        </div>
+        <div class="footer-links">
+          <a href="/p/privacy-policy.html">Privacy Policy</a>
+          <a href="/p/disclaimer.html">Disclaimer</a>
+          <a href="/p/contact.html">Contact</a>
+        </div>
+        <!-- Footer Ad Zone -->
+        <div class="ad-zone footer-ad">
+          <!-- Insert AdSense code here -->
+        </div>
+      </div>
+    </footer>
+    <!-- Blogger Widgets (for posts, comments, etc.) -->
+    <b:section id="footer-widgets" class="footer-widgets"/>
+    <!-- Scripts -->
+    <b:section id="body-end"/>
+    <!-- GDPR Cookie Consent Fallback for No-JS -->
+    <noscript>
+      <div id="cookie-consent-banner">
+        <div class="cookie-banner-content">
+          This site uses cookies to personalize content and ads. By using this site, you agree to our <a href="/p/privacy-policy.html" target="_blank">Privacy Policy</a>.
+        </div>
+      </div>
+    </noscript>
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">↑</button>
+  </body>
+</b:template> 
