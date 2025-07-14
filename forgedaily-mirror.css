@@ -314,6 +314,46 @@ h4, h5, h6 { font-size: 1.1rem; }
   font-weight: bold;
 }
 
+/* === Code Block Styling === */
+pre {
+  position: relative;
+  background: #f1f5f9; /* Light gray background */
+  padding: 1.5em 1em 1em 1em;
+  border-radius: var(--border-radius);
+  overflow-x: auto;
+  font-size: 0.9em;
+  margin: 1.5em 0;
+}
+code {
+  font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+.copy-code-btn {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  background: #cbd5e1;
+  color: var(--color-primary);
+  border: none;
+  padding: 0.3em 0.7em;
+  border-radius: 4px;
+  font-size: 0.8em;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+}
+pre:hover .copy-code-btn {
+  opacity: 1;
+}
+.copy-code-btn:hover {
+  background: #a0aec0;
+}
+.copy-code-btn.copied {
+  background: var(--color-success);
+  color: #fff;
+  opacity: 1;
+}
+
 /* === Author Bio === */
 #author-bio {
   display: flex;
@@ -772,6 +812,15 @@ body.dark-mode #back-to-top {
   padding: 20px 25px;
   margin-bottom: 2.5em;
 }
+@media (min-width: 901px) {
+  .toc-container {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 80px; /* Offset for sticky header */
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+}
 
 .dark-mode .toc-container {
   background: #2d3748; /* Charcoal */
@@ -816,6 +865,17 @@ body.dark-mode #back-to-top {
   padding-left: 5px;
 }
 
+#toc-list li a.active {
+  color: var(--color-success);
+  font-weight: 700;
+  border-left: 3px solid var(--color-success);
+  padding-left: 10px;
+}
+.dark-mode #toc-list li a.active {
+  color: #68d391; /* Lighter green for dark mode */
+  border-left-color: #68d391;
+}
+
 #toc-list .toc-level-h3 a {
   padding-left: 20px; /* Indent sub-headings */
   font-weight: 400;
@@ -823,4 +883,7 @@ body.dark-mode #back-to-top {
 
 #toc-list .toc-level-h3 a:hover {
   padding-left: 25px;
+}
+.dark-mode #toc-list .toc-level-h3 a.active {
+  padding-left: 22px; /* 20px + 2px for border alignment */
 }

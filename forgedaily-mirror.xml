@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<b:template xmlns:b="http://www.google.com/2005/gml/b">
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
   <!--
     ForgeDaily Mirror Blogger Theme
     Artifact 1: XML Template File
     Author: Shafekul Abid
     Version: 1.0
     Instructions:
-      - Upload this file as your Blogger theme.
       - Place the CSS and JS files (Artifacts 2 & 3) at the specified URLs below.
       - Customize branding, widgets, and ad codes as needed.
   -->
-  <b:include data='blog' name='all-head-content'/>
   <head>
+    <b:include data='blog' name='all-head-content'/>
     <meta charset="UTF-8"/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
     <title><data:blog.pageTitle/></title>
@@ -23,12 +23,12 @@
     <meta property="og:description" expr:content='data:blog.metaDescription'/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" expr:content='data:blog.canonicalUrl'/>
-    <meta property="og:image" expr:content='data:blog.postImageUrl'/>
+    <meta property="og:image" expr:content='data:blog.pageType == &quot;item&quot; and data:blog.postImageUrl ? data:blog.postImageUrl : &quot;https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png&quot;'/>
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" expr:content='data:blog.pageTitle'/>
     <meta name="twitter:description" expr:content='data:blog.metaDescription'/>
-    <meta name="twitter:image" expr:content='data:blog.postImageUrl'/>
+    <meta name="twitter:image" expr:content='data:blog.pageType == &quot;item&quot; and data:blog.postImageUrl ? data:blog.postImageUrl : &quot;https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png&quot;'/>
     <!-- Schema Markup (JSON-LD) -->
     <script type="application/ld+json">
       {
@@ -112,14 +112,25 @@
         }
       </script>
     </b:if>
-    <!-- External CSS (Artifact 2) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/abidshafee/cdn@latest/forgedaily-mirror.css"/>
+    <!-- Theme Skin (CSS) - This is required by Blogger -->
+    <b:skin><![CDATA[
+      /*
+        ForgeDaily Mirror Blogger Theme
+        Artifact 2: CSS Stylesheet
+        Author: Shafekul Abid
+        Version: 1.0
+        Instructions:
+          - The main stylesheet is imported from the CDN for performance.
+          - You can add custom CSS overrides below the @import rule.
+      */
+      @import url('https://cdn.jsdelivr.net/gh/abidshafee/cdn@latest/forgedaily-mirror.css');
+
+      /* --- Custom CSS Overrides --- */
+      /* Add your custom CSS here to override the main stylesheet */
+
+    ]]></b:skin>
     <!-- External JS (Artifact 3) -->
-    <script src="https://cdn.jsdelivr.net/gh/abidshafee/cdn@latest/forgedaily-mirror.js"></script>
-    <!-- Critical CSS for above-the-fold (optional, for performance) -->
-    <style>
-      /* Insert critical CSS here for faster rendering */
-    </style>
+    <script async='' src='https://cdn.jsdelivr.net/gh/abidshafee/cdn@latest/forgedaily-mirror.js'/>
   </head>
   <body expr:class='&quot;page-type-&quot; + data:blog.pageType'>
     <!-- Sticky Social Sharing Sidebar (Desktop) -->
@@ -424,4 +435,4 @@
     //]]>
     </script>
   </body>
-</b:template> 
+</html>

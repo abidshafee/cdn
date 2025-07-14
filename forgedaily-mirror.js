@@ -257,4 +257,82 @@ if (backToTopBtn) {
   });
 }
 
+// === Sticky TOC with Active Section Highlighting ===
+function initializeStickyTOC() {
+  if (!document.body.classList.contains('page-type-item')) {
+    return;
+  }
+
+  const tocContainer = document.getElementById('toc-container');
+  // Don't run on mobile or if TOC doesn't exist
+  if (!tocContainer || window.matchMedia('(max-width: 900px)').matches) {
+    return;
+  }
+
+  const tocLinks = Array.from(document.querySelectorAll('#toc-list a'));
+  const headings = Array.from(document.querySelectorAll('.post-body h2, .post-body h3'));
+
+  if (tocLinks.length === 0 || headings.length === 0) return;
+
+  let ticking = false;
+
+  const updateActiveLink = () => {
+    const fromTop = window.scrollY + 100; // Offset for sticky header and some leeway
+
+    let activeId = '';
+    headings.forEach(heading => {
+      if (heading.offsetTop <= fromTop) {
+        activeId = heading.id;
+      }
+    });
+
+    tocLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      link.classList.toggle('active', href === `#${activeId}`);
+    });
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateActiveLink);
+      ticking = true;
+    }
+  }, { passive: true });
+}
+document.addEventListener('DOMContentLoaded', initializeStickyTOC);
+
+// === Copy to Clipboard for Code Blocks ===
+function addCopyToClipboardButtons() {
+  const codeBlocks = document.querySelectorAll('pre');
+
+  codeBlocks.forEach(block => {
+    const code = block.querySelector('code');
+    if (!code) return; // Skip if no <code> inside <pre>
+
+    const button = document.createElement('button');
+    button.className = 'copy-code-btn';
+    button.textContent = 'Copy';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+
+    block.appendChild(button);
+
+    button.addEventListener('click', () => {
+      const codeToCopy = code.innerText;
+      navigator.clipboard.writeText(codeToCopy).then(() => {
+        button.textContent = 'Copied!';
+        button.classList.add('copied');
+        setTimeout(() => {
+          button.textContent = 'Copy';
+          button.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy code: ', err);
+        button.textContent = 'Error';
+      });
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', addCopyToClipboardButtons);
+
 // === End of Script === 
