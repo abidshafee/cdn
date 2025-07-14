@@ -30,42 +30,65 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // === Reading Time Calculation ===
 function calculateReadingTime() {
-  const postContent = document.querySelector('#blog-posts');
-  if (!postContent) return;
-  const text = postContent.innerText || '';
-  const words = text.trim().split(/\s+/).length;
-  const wordsPerMinute = 200;
-  const time = Math.ceil(words / wordsPerMinute);
-  let readingTimeElem = document.getElementById('reading-time');
-  if (!readingTimeElem) {
-    readingTimeElem = document.createElement('span');
-    readingTimeElem.id = 'reading-time';
-    postContent.prepend(readingTimeElem);
+  // Only run on post pages, using the class we added to the body tag
+  if (!document.body.classList.contains('page-type-item')) {
+    return;
   }
-  readingTimeElem.textContent = `⏱️ ${time} min read`;
+
+  const postBody = document.querySelector('.post-body');
+  const postTitle = document.querySelector('.post-title');
+
+  // Exit if the main elements of a post aren't found
+  if (!postBody || !postTitle) return;
+
+  const text = postBody.innerText || '';
+  const words = text.trim().split(/\s+/).length;
+  const wordsPerMinute = 200; // Average reading speed
+  const time = Math.ceil(words / wordsPerMinute);
+
+  // Create the element to display the reading time
+  const readingTimeElem = document.createElement('div');
+  readingTimeElem.className = 'post-meta-item reading-time';
+  readingTimeElem.innerHTML = `<span>⏱️ ${time} min read</span>`;
+
+  // Insert it right after the post title for good visibility
+  postTitle.insertAdjacentElement('afterend', readingTimeElem);
 }
 document.addEventListener('DOMContentLoaded', calculateReadingTime);
 
-// === Table of Contents Generation ===
-function generateTOC() {
-  const postContent = document.querySelector('#blog-posts');
-  if (!postContent) return;
-  const headings = postContent.querySelectorAll('h2, h3');
-  if (!headings.length) return;
-  const toc = document.createElement('nav');
-  toc.id = 'table-of-contents';
-  toc.innerHTML = '<strong>Table of Contents</strong><ul></ul>';
-  const ul = toc.querySelector('ul');
-  headings.forEach((heading, i) => {
-    const id = heading.id || `heading-${i}`;
-    heading.id = id;
-    const li = document.createElement('li');
-    li.innerHTML = `<a href="#${id}">${heading.textContent}</a>`;
-    ul.appendChild(li);
-  });
-  postContent.prepend(toc);
+// === Last Updated Date Display ===
+function addLastUpdatedDate() {
+  if (!document.body.classList.contains('page-type-item')) {
+    return;
+  }
+
+  const timestampsContainer = document.getElementById('post-timestamps');
+  const postTitle = document.querySelector('.post-title');
+
+  if (!timestampsContainer || !postTitle) return;
+
+  const publishedDate = new Date(timestampsContainer.dataset.published);
+  const updatedDate = new Date(timestampsContainer.dataset.updated);
+
+  // Show "Last updated" if it was updated more than 24 hours after publishing
+  const oneDayInMs = 24 * 60 * 60 * 1000;
+  if (updatedDate.getTime() - publishedDate.getTime() > oneDayInMs) {
+    const formattedDate = new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }).format(updatedDate);
+
+    const updatedElem = document.createElement('div');
+    updatedElem.className = 'post-meta-item last-updated';
+    updatedElem.innerHTML = `<span>🔄 Last updated on ${formattedDate}</span>`;
+
+    // Insert it after the reading time element for consistency
+    const readingTimeElem = document.querySelector('.reading-time');
+    (readingTimeElem || postTitle).insertAdjacentElement('afterend', updatedElem);
+  }
 }
-document.addEventListener('DOMContentLoaded', generateTOC);
+document.addEventListener('DOMContentLoaded', addLastUpdatedDate);
 
 // === Social Sharing Functionality ===
 document.querySelectorAll('.share-btn').forEach(btn => {

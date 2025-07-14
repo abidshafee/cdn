@@ -16,7 +16,6 @@
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
     <title><data:blog.pageTitle/></title>
     <meta name="description" expr:content='data:blog.metaDescription'/>
-    <meta name="keywords" expr:content='data:blog.metaKeywords'/>
     <meta name="author" content="ForgeDaily Mirror"/>
     <link rel="canonical" expr:href='data:blog.canonicalUrl'/>
     <!-- Open Graph -->
@@ -35,9 +34,9 @@
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "ForgeDaily Mirror",
-        "url": "https://forgedaily.com/",
-        "logo": "https://forgedaily.com/logo.png"
+        "name": <b:eval expr='data:blog.title.jsString' />,
+        "url": <b:eval expr='data:blog.homepageUrl.jsString' />,
+        "logo": "https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png"
       }
     </script>
     <!-- Article Schema for Blog Posts -->
@@ -46,73 +45,69 @@
         {
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "<data:post.title/>",
-          "description": "<data:post.snippet/>",
-          "image": "<data:post.firstImageUrl/>",
+          "headline": <b:eval expr='data:post.title.jsString' />,
+          "description": <b:eval expr='data:post.snippet.jsString' />,
+          "image": <b:eval expr='data:post.firstImageUrl.jsString' />,
           "author": {
             "@type": "Person",
-            "name": "<data:post.author/>",
-            "url": "<data:post.authorProfileUrl/>"
+            "name": <b:eval expr='data:post.author.jsString' />,
+            "url": <b:eval expr='data:post.authorProfileUrl.jsString' />
           },
-          "datePublished": "<data:post.timestamp/>",
+          "datePublished": <b:eval expr='data:post.timestampISO8601.jsString' />,
           "publisher": {
             "@type": "Organization",
-            "name": "ForgeDaily Mirror",
+            "name": <b:eval expr='data:blog.title.jsString' />,
             "logo": {
               "@type": "ImageObject",
-              "url": "https://forgedaily.com/logo.png"
+              "url": "https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png"
             }
           }
         }
       </script>
     </b:if>
     <!-- Review Schema for Review Posts (add a label 'Review' to trigger) -->
-    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels contains &quot;Review&quot;'>
+    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels any (l => l.name == &quot;Review&quot;)'>
+      <b:with value='data:post.body.css(&quot;div.review-data&quot;).first' var='reviewData'>
       <script type="application/ld+json">
         {
           "@context": "https://schema.org",
           "@type": "Review",
           "itemReviewed": {
             "@type": "Product",
-            "name": "<data:post.title/>",
-            "image": "<data:post.firstImageUrl/>"
+            "name": <b:eval expr='data:post.title.jsString' />,
+            "image": <b:eval expr='data:post.firstImageUrl.jsString' />
           },
           "author": {
             "@type": "Person",
-            "name": "<data:post.author/>"
+            "name": <b:eval expr='data:post.author.jsString' />
           },
           "reviewRating": {
             "@type": "Rating",
-            "ratingValue": "4.5",
-            "bestRating": "5"
+            "ratingValue": <b:eval expr='($reviewData ? $reviewData.data(&quot;rating&quot;) : &quot;4.5&quot;).json' />,
+            "bestRating": <b:eval expr='($reviewData ? $reviewData.data(&quot;best&quot;) : &quot;5&quot;).json' />
           },
-          "reviewBody": "<data:post.snippet/>"
+          "reviewBody": <b:eval expr='data:post.snippet.jsString' />
         }
       </script>
+      </b:with>
     </b:if>
     <!-- FAQ Schema for FAQ Pages (add a label 'FAQ' to trigger) -->
-    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels contains &quot;FAQ&quot;'>
+    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels any (l => l.name == &quot;FAQ&quot;)'>
       <script type="application/ld+json">
-        {
+        { // To use this, structure your post with <div class='faq-item'><h3 class='faq-question'>...</h3><div class='faq-answer'>...</div></div>
           "@context": "https://schema.org",
           "@type": "FAQPage",
           "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Sample Question 1?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Sample answer 1."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Sample Question 2?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Sample answer 2."
-              }
-            }
+            <b:loop values='data:post.body.css(&quot;div.faq-item&quot;)' var='faq'>
+              {
+                "@type": "Question",
+                "name": <b:eval expr='faq.css(&quot;.faq-question&quot;).first.escaped.jsString' />,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": <b:eval expr='faq.css(&quot;.faq-answer&quot;).first.escaped.jsString' />
+                }
+              }<b:if cond='!data:faq.isLast'>,</b:if>
+            </b:loop>
           ]
         }
       </script>
@@ -126,7 +121,7 @@
       /* Insert critical CSS here for faster rendering */
     </style>
   </head>
-  <body>
+  <body expr:class='&quot;page-type-&quot; + data:blog.pageType'>
     <!-- Sticky Social Sharing Sidebar (Desktop) -->
     <aside id="sticky-social-sidebar" aria-label="Sticky social sharing sidebar">
       <ul>
@@ -138,8 +133,8 @@
     <!-- Header with Logo and Navigation -->
     <header id="site-header">
       <div class="container header-flex">
-        <a href="/" class="logo" title="ForgeDaily Mirror">
-          <img src="https://forgedaily.com/logo.png" alt="ForgeDaily Mirror Logo"/>
+        <a expr:href='data:blog.homepageUrl' class="logo" expr:title='data:blog.title'>
+          <img src="https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png" expr:alt='data:blog.title + &quot; Logo&quot;'/>
         </a>
         <nav id="main-nav" role="navigation" aria-label="Main navigation">
           <ul class="nav-list">
@@ -181,7 +176,7 @@
       </div>
     </header>
     <!-- Breadcrumbs (SEO) -->
-    <nav class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList" aria-label="Breadcrumb">
+    <nav class="breadcrumbs" itemscope='itemscope' itemtype='http://schema.org/BreadcrumbList' aria-label="Breadcrumb">
       <b:section id="breadcrumbs" class="breadcrumbs-section"/>
     </nav>
     <!-- Main Content Area -->
@@ -197,6 +192,19 @@
         </aside>
         <!-- Blog Posts -->
         <section id="blog-posts" aria-label="Blog posts">
+          <!-- Post Timestamps for JS -->
+          <b:if cond='data:blog.pageType == &quot;item&quot;'>
+            <div id='post-timestamps' style='display:none;'
+                 expr:data-published='data:post.timestampISO8601'
+                 expr:data-updated='data:post.lastUpdatedISO8601'/>
+          </b:if>
+          <!-- Table of Contents Placeholder -->
+          <b:if cond='data:blog.pageType == &quot;item&quot;'>
+            <div id='toc-container' style='display:none;'>
+              <p class='toc-title'>Table of Contents</p>
+              <ul id='toc-list'/>
+            </div>
+          </b:if>
           <b:section id="main-widgets" class="main-widgets"/>
           <!-- In-Content Ad Zone -->
           <div class="ad-zone in-content-ad">
@@ -206,14 +214,27 @@
       </div>
     </main>
     <!-- Author Bio Section (with schema) -->
-    <section id="author-bio" itemscope itemtype="https://schema.org/Person">
-      <img src="/author.jpg" alt="Author Photo" itemprop="image"/>
-      <div>
-        <span itemprop="name">Author Name</span>
-        <span itemprop="description">Short author bio goes here.</span>
-        <a href="/p/about.html" itemprop="url">Read more</a>
-      </div>
-    </section>
+    <b:if cond='data:blog.pageType == &quot;item&quot;'>
+      <section id="author-bio" itemscope='itemscope' itemtype='http://schema.org/Person'>
+        <b:if cond='data:post.author.authorPhoto.url'>
+          <img expr:src='data:post.author.authorPhoto.url' expr:alt='data:post.author + &quot; Photo&quot;' itemprop='image'/>
+        </b:if>
+        <div>
+          <span itemprop='name'><data:post.author/></span>
+          <b:if cond='data:post.author.aboutMe'><span itemprop='description'><data:post.author.aboutMe/></span></b:if>
+          <a expr:href='data:post.authorProfileUrl' itemprop='url' rel='author'>Read more</a>
+        </div>
+      </section>
+    </b:if>
+    <!-- Related Posts Section -->
+    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels'>
+      <section id='related-posts-container' aria-label='Related Posts'>
+        <div class='container'>
+          <h2 class='related-posts-title'>Related Posts</h2>
+          <div id='related-posts' class='loading-placeholder'/>
+        </div>
+      </section>
+    </b:if>
     <!-- Comments Section -->
     <section id="comments" aria-label="Comments">
       <b:section id="comments-widgets" class="comments-widgets"/>
@@ -228,16 +249,23 @@
     <section id="newsletter-signup" aria-label="Newsletter signup">
       <form id="email-signup-form">
         <label for="email">Subscribe to our newsletter:</label>
-        <input type="email" id="email" name="email" required placeholder="Enter your email"/>
+        <input type="email" id="email" name="email" required='required' placeholder="Enter your email"/>
         <button type="submit">Subscribe</button>
       </form>
     </section>
+    <!-- GDPR Cookie Consent Banner -->
+    <div id='cookie-consent-banner' role='dialog' aria-live='polite' aria-label='Cookie consent'>
+      <div class='cookie-banner-content'>
+        <p>This site uses cookies to enhance user experience and analyze traffic. By clicking "Accept," you agree to our use of cookies. <a href='/p/privacy-policy.html'>Learn more</a>.</p>
+        <button id='accept-cookies'>Accept</button>
+      </div>
+    </div>
     <!-- Footer -->
     <footer id="site-footer" aria-label="Footer">
       <div class="container footer-flex">
         <div class="footer-branding">
-          <img src="https://forgedaily.com/logo.png" alt="ForgeDaily Mirror Logo"/>
-          <span>© <data:blog.year/> ForgeDaily Mirror. All rights reserved.</span>
+          <img src="https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png" expr:alt='data:blog.title + &quot; Logo&quot;'/>
+          <span>© <data:blog.year/> <data:blog.title/>. All rights reserved.</span>
         </div>
         <div class="footer-links">
           <a href="/p/privacy-policy.html">Privacy Policy</a>
@@ -264,5 +292,130 @@
     </noscript>
     <!-- Back to Top Button -->
     <button id="back-to-top" aria-label="Back to top">↑</button>
+    <!-- Table of Contents Generator Script -->
+    <b:if cond='data:blog.pageType == &quot;item&quot;'>
+      <script>
+      //<![CDATA[
+      document.addEventListener('DOMContentLoaded', function() {
+        const tocContainer = document.getElementById('toc-container');
+        const tocList = document.getElementById('toc-list');
+        const postBody = document.querySelector('.post-body'); // Standard Blogger post container
+
+        if (!tocContainer || !tocList || !postBody) {
+          return; // Exit if essential elements are not found
+        }
+
+        // Find all h2 and h3 headings within the post body
+        const headings = postBody.querySelectorAll('h2, h3');
+        let headingCount = 0;
+
+        headings.forEach((heading, index) => {
+          if (!heading.textContent.trim()) return; // Skip empty headings
+
+          const id = 'toc-heading-' + index;
+          heading.id = id;
+
+          const listItem = document.createElement('li');
+          listItem.className = 'toc-level-' + heading.tagName.toLowerCase(); // For styling h2 vs h3
+          const link = document.createElement('a');
+          link.href = '#' + id;
+          link.textContent = heading.textContent.trim();
+          listItem.appendChild(link);
+          tocList.appendChild(listItem);
+          headingCount++;
+        });
+
+        // If headings were found, make the TOC visible
+        if (headingCount > 0) {
+          tocContainer.style.display = 'block';
+        }
+      });
+      //]]>
+      </script>
+    </b:if>
+    <!-- Related Posts Script -->
+    <b:if cond='data:blog.pageType == &quot;item&quot; and data:post.labels'>
+      <script>
+      //<![CDATA[
+      (function() {
+        const relatedPostsContainer = document.getElementById('related-posts');
+        if (!relatedPostsContainer) return;
+
+        const firstLabel = '<b:eval expr="data:post.labels.first.name.jsString"/>';
+        const currentPostUrl = '<b:eval expr="data:post.url.jsString"/>';
+        const maxResults = 4; // Number of related posts to show
+
+        if (!firstLabel) return;
+
+        // Fetch posts from the feed of the first label
+        const feedUrl = `/feeds/posts/default/-/${encodeURIComponent(firstLabel)}?alt=json&max-results=${maxResults + 1}`;
+
+        fetch(feedUrl)
+          .then(response => response.json())
+          .then(data => {
+            const entries = data.feed.entry || [];
+            let html = '';
+            let count = 0;
+
+            for (const entry of entries) {
+              if (count >= maxResults) break;
+
+              const postUrl = (entry.link.find(link => link.rel === 'alternate') || {}).href;
+              if (!postUrl || postUrl === currentPostUrl) continue; // Skip current post or posts without a URL
+
+              const postTitle = entry.title.$t;
+              // Get a better quality thumbnail and provide a fallback
+              const thumbnailUrl = entry.media$thumbnail ? entry.media$thumbnail.url.replace(/\/s\d+(-c)?\//, '/w400-h225-c/') : 'https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-placeholder.png';
+
+              html += `<div class="related-post-item">
+                <a href="${postUrl}" class="related-post-thumb-link"><img class="related-post-thumb" src="${thumbnailUrl}" alt="${postTitle}" loading="lazy"/></a>
+                <h3 class="related-post-title"><a href="${postUrl}">${postTitle}</a></h3>
+              </div>`;
+              count++;
+            }
+
+            relatedPostsContainer.innerHTML = html;
+            if (!html) relatedPostsContainer.closest('#related-posts-container').style.display = 'none';
+          }).catch(error => console.error('Error fetching related posts:', error));
+      })();
+      //]]>
+      </script>
+    </b:if>
+    <!-- Cookie Consent Banner Script -->
+    <script>
+    //<![CDATA[
+    (function() {
+        const COOKIE_NAME = 'cookie_consent_accepted';
+        const COOKIE_EXPIRATION_DAYS = 365;
+
+        const banner = document.getElementById('cookie-consent-banner');
+        const acceptBtn = document.getElementById('accept-cookies');
+
+        if (!banner || !acceptBtn) {
+            return;
+        }
+
+        function hasConsentCookie() {
+            return document.cookie.split(';').some((item) => item.trim().startsWith(COOKIE_NAME + '='));
+        }
+
+        function setConsentCookie() {
+            const d = new Date();
+            d.setTime(d.getTime() + (COOKIE_EXPIRATION_DAYS * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = COOKIE_NAME + "=true;" + expires + ";path=/;SameSite=Lax";
+        }
+
+        acceptBtn.addEventListener('click', function() {
+            setConsentCookie();
+            banner.classList.remove('show');
+        });
+
+        if (!hasConsentCookie()) {
+            setTimeout(() => { banner.classList.add('show'); }, 500);
+        }
+    })();
+    //]]>
+    </script>
   </body>
 </b:template> 

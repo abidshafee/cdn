@@ -430,6 +430,38 @@ h4, h5, h6 { font-size: 1.1rem; }
   }
 }
 
+/* === Post Meta (Author, Date, Reading Time) === */
+.post-meta-item {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: -0.5em 0 1.5em 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.reading-time span {
+  background: #f1f5f9;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+}
+body.dark-mode .post-meta-item {
+  color: #a0aec0; /* Lighter muted color for dark mode */
+}
+body.dark-mode .reading-time span {
+  background: #2d3748; /* Charcoal */
+}
+
+.last-updated span {
+  background: #e6fffa; /* A light green, from --color-success family */
+  color: #234e52;
+  padding: 0.2em 0.6em;
+  border-radius: 4px;
+}
+body.dark-mode .last-updated span {
+  background: #2c5282; /* A muted blue for dark mode */
+  color: #e2e8f0;
+}
+
 /* === Related Posts === */
 #related-posts-container {
   margin: 3em 0;
