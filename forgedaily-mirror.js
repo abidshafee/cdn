@@ -1,7 +1,7 @@
 /*
   ForgeDaily Mirror Blogger Theme
   Artifact 3: JavaScript File
-  Author: [Your Name]
+  Author: Shafekul Abid
   Version: 1.0
   Instructions:
     - Link this file in your Blogger XML template.
