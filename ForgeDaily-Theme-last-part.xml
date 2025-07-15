@@ -1,0 +1,485 @@
+window.addEventListener('scroll', function() {
+          const scrollTop = window.pageYOffset;
+          const docHeight = document.body.scrollHeight - window.innerHeight;
+          const scrollPercent = (scrollTop / docHeight) * 100;
+          progressBar.style.width = scrollPercent + '%';
+        });
+      }
+    }
+    
+    // Advertisement functionality
+    function initializeAds() {
+      const adContainers = document.querySelectorAll('.ad-container');
+      
+      adContainers.forEach(container => {
+        // Add loading state
+        container.classList.add('ad-loading');
+        
+        // Simulate ad loading
+        setTimeout(() => {
+          container.classList.remove('ad-loading');
+          container.classList.add('ad-loaded');
+        }, 1000);
+      });
+    }
+    
+    // Search functionality
+    function initializeSearch() {
+      const searchForm = document.querySelector('.search-form');
+      const searchInput = document.querySelector('.search-input');
+      
+      if (searchForm && searchInput) {
+        searchForm.addEventListener('submit', function(e) {
+          if (searchInput.value.trim() === '') {
+            e.preventDefault();
+            searchInput.focus();
+          }
+        });
+        
+        // Search suggestions (basic implementation)
+        searchInput.addEventListener('input', function() {
+          const query = this.value.toLowerCase();
+          if (query.length > 2) {
+            // Implement search suggestions here
+            console.log('Search query:', query);
+          }
+        });
+      }
+    }
+    
+    // Newsletter subscription
+    function initializeNewsletter() {
+      const newsletterForm = document.querySelector('.newsletter-form');
+      const emailInput = document.querySelector('.newsletter-email');
+      
+      if (newsletterForm && emailInput) {
+        newsletterForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const email = emailInput.value.trim();
+          
+          if (email && isValidEmail(email)) {
+            // Implement newsletter subscription
+            alert('Thank you for subscribing!');
+            emailInput.value = '';
+          } else {
+            alert('Please enter a valid email address.');
+          }
+        });
+      }
+    }
+    
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    
+    // Smooth scrolling for anchor links
+    function initializeSmoothScrolling() {
+      const anchorLinks = document.querySelectorAll('a[href^="#"]');
+      
+      anchorLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    }
+    
+    // Initialize additional features
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeSearch();
+      initializeNewsletter();
+      initializeSmoothScrolling();
+    });
+    
+    // Performance optimization
+    function debounce(func, delay) {
+      let timeoutId;
+      return function (...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+      };
+    }
+    
+    // Optimize scroll events
+    window.addEventListener('scroll', debounce(function() {
+      // Scroll-based functionality
+    }, 100));
+    
+    // Error handling
+    window.addEventListener('error', function(event) {
+      console.error('Theme error:', event.error);
+    });
+    
+    // Performance monitoring
+    window.addEventListener('load', function() {
+      // Log performance metrics
+      if (window.performance && window.performance.timing) {
+        const timing = window.performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        console.log('Page load time:', loadTime + 'ms');
+      }
+    });
+    
+    // Service worker registration (optional)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('ServiceWorker registration successful');
+        }).catch(function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+    
+    // Google Analytics integration
+    function initializeAnalytics() {
+      // Google Analytics tracking code
+      if (typeof gtag !== 'undefined') {
+        gtag('config', 'GA_TRACKING_ID');
+      }
+    }
+    
+    // Social media integration
+    function initializeSocialFeatures() {
+      // Facebook SDK
+      if (window.FB) {
+        window.FB.init({
+          appId: 'YOUR_APP_ID',
+          cookie: true,
+          xfbml: true,
+          version: 'v18.0'
+        });
+      }
+      
+      // Twitter widgets
+      if (window.twttr) {
+        window.twttr.widgets.load();
+      }
+    }
+    
+    // Accessibility improvements
+    function initializeAccessibility() {
+      // Skip to content link
+      const skipLink = document.createElement('a');
+      skipLink.href = '#main-content';
+      skipLink.textContent = 'Skip to content';
+      skipLink.className = 'skip-link';
+      document.body.insertBefore(skipLink, document.body.firstChild);
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          document.body.classList.add('keyboard-navigation');
+        }
+      });
+      
+      document.addEventListener('mousedown', function() {
+        document.body.classList.remove('keyboard-navigation');
+      });
+    }
+    
+    // Initialize all features
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeAnalytics();
+      initializeSocialFeatures();
+      initializeAccessibility();
+    });
+    
+    // Theme customization API
+    window.ForgeDaily = {
+      version: '1.0.0',
+      
+      // Custom methods for theme customization
+      addWidget: function(widget) {
+        // Add custom widget functionality
+      },
+      
+      setThemeColor: function(color) {
+        document.documentElement.style.setProperty('--primary-color', color);
+      },
+      
+      toggleSidebar: function() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('hidden');
+      },
+      
+      refreshContent: function() {
+        // Refresh dynamic content
+      }
+    };
+  </script>
+  
+  <!-- Structured Data for SEO -->
+  <script type='application/ld+json'>
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "<data:blog.title/>",
+      "url": "<data:blog.homepageUrl/>",
+      "description": "<data:blog.metaDescription/>",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "<data:blog.homepageUrl/>search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+  
+  <b:if cond='data:blog.pageType == "item"'>
+    <script type='application/ld+json'>
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "<data:post.title/>",
+        "author": {
+          "@type": "Person",
+          "name": "<data:post.author/>"
+        },
+        "datePublished": "<data:post.timestampISO8601/>",
+        "dateModified": "<data:post.lastUpdatedISO8601/>",
+        "publisher": {
+          "@type": "Organization",
+          "name": "<data:blog.title/>",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://cdn.jsdelivr.net/gh/abidshafee/cdn@main/forgedaily-logo.png"
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "<data:post.url.canonical/>"
+        },
+        "image": "<data:post.featuredImage/>",
+        "description": "<data:post.snippet/>"
+      }
+    </script>
+  </b:if>
+  
+  <!-- Google Analytics -->
+  <script async='async' src='https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID'></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_TRACKING_ID');
+  </script>
+  
+  <!-- AdSense -->
+  <script async='async' src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXX'></script>
+  
+  <!-- Social Media Scripts -->
+  <script async='async' defer='defer' crossorigin='anonymous' src='https://connect.facebook.net/en_US/sdk.js'></script>
+  <script async='async' src='https://platform.twitter.com/widgets.js'></script>
+  
+  <!-- Theme Configuration -->
+  <script>
+    // Theme configuration object
+    const themeConfig = {
+      name: 'ForgeDaily',
+      version: '1.0.0',
+      features: {
+        darkMode: true,
+        lazyLoading: true,
+        socialSharing: true,
+        tableOfContents: true,
+        relatedPosts: true,
+        readingProgress: true,
+        cookieConsent: true,
+        backToTop: true,
+        mobileMenu: true,
+        searchSuggestions: true,
+        newsletter: true,
+        ads: true,
+        analytics: true,
+        accessibility: true
+      },
+      colors: {
+        primary: '#007bff',
+        secondary: '#6c757d',
+        success: '#28a745',
+        danger: '#dc3545',
+        warning: '#ffc107',
+        info: '#17a2b8',
+        light: '#f8f9fa',
+        dark: '#343a40'
+      },
+      breakpoints: {
+        xs: '0px',
+        sm: '576px',
+        md: '768px',
+        lg: '992px',
+        xl: '1200px',
+        xxl: '1400px'
+      }
+    };
+    
+    // Make config globally available
+    window.themeConfig = themeConfig;
+  </script>
+  
+  <!-- Print Styles -->
+  <style media='print'>
+    @media print {
+      * {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+      }
+      
+      .header, .sidebar, .footer, .mobile-menu, .social-sharing, .comments-section, .ad-container, .cookie-consent-banner, .back-to-top, .share-buttons {
+        display: none !important;
+      }
+      
+      .main-content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      .post-title {
+        font-size: 18pt !important;
+        margin-bottom: 10pt !important;
+      }
+      
+      .post-meta {
+        font-size: 10pt !important;
+        margin-bottom: 10pt !important;
+      }
+      
+      .post-content {
+        font-size: 12pt !important;
+        line-height: 1.4 !important;
+      }
+      
+      .post-content img {
+        max-width: 100% !important;
+        height: auto !important;
+      }
+      
+      .post-content a {
+        color: black !important;
+        text-decoration: underline !important;
+      }
+      
+      .post-content a:after {
+        content: " (" attr(href) ")";
+        font-size: 10pt;
+        color: #666;
+      }
+      
+      .post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6 {
+        page-break-after: avoid;
+        font-weight: bold;
+      }
+      
+      .post-content p, .post-content li {
+        orphans: 3;
+        widows: 3;
+      }
+      
+      .post-content blockquote {
+        border-left: 4px solid #ddd;
+        padding-left: 1em;
+        margin: 1em 0;
+        font-style: italic;
+      }
+      
+      .post-content pre, .post-content code {
+        font-family: 'Courier New', monospace;
+        font-size: 10pt;
+        border: 1px solid #ddd;
+        padding: 5pt;
+        background: #f5f5f5;
+      }
+      
+      .post-content table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 10pt;
+      }
+      
+      .post-content th, .post-content td {
+        border: 1px solid #ddd;
+        padding: 5pt;
+        text-align: left;
+      }
+      
+      .post-content th {
+        background: #f5f5f5;
+        font-weight: bold;
+      }
+    }
+  </style>
+  
+  <!-- Critical CSS for above-the-fold content -->
+  <style>
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .main-content {
+      min-height: calc(100vh - 200px);
+    }
+    
+    .post-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    .post-meta {
+      color: #6c757d;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .post-content {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #333;
+    }
+    
+    .post-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .sidebar {
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .widget-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    
+    .footer {
+      background: #343a40;
+      color: white;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+  </style>
+  
+  <!-- End of theme file -->
+  
+</body>
+</html>
