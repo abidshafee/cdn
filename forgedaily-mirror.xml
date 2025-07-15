@@ -131,8 +131,6 @@
     ]]></b:skin>
     <!-- External JS (Artifact 3) -->
     <script async='' src='https://cdn.jsdelivr.net/gh/abidshafee/cdn@latest/forgedaily-mirror.js'/>
-    
-    
   </head>
   <body expr:class='&quot;page-type-&quot; + data:blog.pageType'>
     <!-- Sticky Social Sharing Sidebar (Desktop) -->
@@ -301,30 +299,17 @@
     <b:section id="footer-widgets" class="footer-widgets"/>
     <!-- Scripts -->
     <b:section id="body-end"/>
+    <!-- GDPR Cookie Consent Fallback for No-JS -->
+    <noscript>
+      <div id="cookie-consent-banner">
+        <div class="cookie-banner-content">
+          This site uses cookies to personalize content and ads. By using this site, you agree to our <a href="/p/privacy-policy.html" target="_blank">Privacy Policy</a>.
+        </div>
+      </div>
+    </noscript>
     <!-- Back to Top Button -->
     <button id="back-to-top" aria-label="Back to top">↑</button>
-    <!-- GDPR Cookie Consent Fallback for No-JS (Correct Placement) -->
     <!-- Table of Contents Generator Script -->
-     <noscript>
-        #cookie-consent-banner {
-          position: fixed; left: 0; right: 0; bottom: 0; background: #23272a; color: #fff;
-          z-index: 2000; padding: 1em 0.5em; box-shadow: 0 -2px 8px rgba(26,32,44,0.12);
-          font-size: 1rem; text-align: center;
-        }
-        #cookie-consent-banner .cookie-banner-content {
-          max-width: 900px; margin: 0 auto; display: flex; flex-wrap: wrap;
-          align-items: center; justify-content: center; gap: 1em;
-        }
-        #cookie-consent-banner a { color: #90cdf4; text-decoration: underline; }
-      
-        
-          This site uses cookies. .
-        
-      
-    
-    </noscript>
-    
-    
     <b:if cond='data:blog.pageType == &quot;item&quot;'>
       <script>
       //<![CDATA[
